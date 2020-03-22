@@ -1,7 +1,5 @@
-function catchErrors(fn) {
+module.exports = fn => {
   return function(req, res, next) {
-    fn(req, res, next).catch(e => next(e))
+    return fn(req, res, next).catch(next)
   }
 }
-
-module.exports = catchErrors

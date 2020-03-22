@@ -1,15 +1,21 @@
+const User = require("../api/v1/User/model")
+
 const hasPermissions = permissionNeeded => {
-  return function(req, res, next) {
-    let userPermissions = req.user.permissions
+  return async function(req, res, next) {
+    let hasEnoughPermission = true
+    let { permissions: userPermissions } = await User.findById({
+      _id: req.user._id
+    }).select("+permissions")
 
-    const isAllowed = role => permissionNeeded.indexOf(role) > -1
+    permissionNeeded.forEach(p => {
+      if (!userPermissions.includes(p)) {
+        hasEnoughPermission = false
+      }
+    })
 
-    res.send(matchedPermissions)
-
-    if (req.user && isAllowed(userPermissions)) next()
-    else {
-      response.status(403).json({ message: "Insufficient permission" })
-    }
+    if (!hasEnoughPermission) {
+      throw new Error("Insufficient Permission")
+    } else next()
   }
 }
 

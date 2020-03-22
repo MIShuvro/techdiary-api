@@ -51,10 +51,7 @@ module.exports.login = async (req, res) => {
     })
 
   if (matched) {
-    let token = jwt.sign(
-      { _id: fetchedUser._id, permissions: fetchedUser.permissions },
-      process.env.JWT_SECRET
-    )
+    let token = jwt.sign({ _id: fetchedUser._id }, process.env.JWT_SECRET)
 
     Token.create({
       sub: fetchedUser._id,

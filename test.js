@@ -26,3 +26,9 @@
 // detech client for unique token for a client
 // setup babel to project
 // add a plugij in mongoose globally
+
+// TASK
+//---------------------------
+// Article -> update , delete
+// Tag -> crud
+// Category -> update , delete

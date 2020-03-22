@@ -55,7 +55,8 @@ const UserSchema = new mongoose.Schema({
   },
   permissions: {
     type: [String],
-    enum: require("./PERMISSIONS").permissionsEnum
+    enum: require("./PERMISSIONS").permissionsEnum,
+    select: false
   }
 })
 
