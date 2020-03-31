@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 const uniqueValidator = require("mongoose-unique-validator")
 const bcrypt = require("bcryptjs")
-const { isEmail, isURL, isAlphanumeric } = require("validator")
+const { isEmail, isURL, isAlphanumeric,matches } = require("validator")
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -41,7 +41,13 @@ const UserSchema = new mongoose.Schema({
     validate: [
       isAlphanumeric,
       "Only alphabet and numeric characters are supported in password"
-    ]
+    ],
+     validate: {
+       validator: (password) => {
+         return matches(password, /[ !@#$%^&*()_+\-=\[\]{};': "\\|,.<>\/?]/)
+       },
+       message: "Minimum 1 Special character required in password"
+     }
   },
   confirmPassword: {
     type: String,

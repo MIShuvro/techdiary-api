@@ -5,10 +5,10 @@ const isAuthenticated = require("../../../middlewares/isAuthenticated")
 const hasPermissions = require("../../../middlewares/hasPermissions")
 
 Router.get("/", index)
-// Router.get("/:slug", show)
+Router.get("/:slug", show)
 
-// Router.put("/:slug", hasPermissions(["UPDATE_ARTICLE"]), update)
+ Router.put("/:slug", isAuthenticated, hasPermissions(["UPDATE_CATEGORY"]), update)
 Router.post("/", isAuthenticated, hasPermissions(["CREATE_CATEGORY"]), store)
-// Router.delete("/:slug", hasPermissions(["DELETE_ARTICLE"]), destroy)
+ Router.delete("/:slug", isAuthenticated, hasPermissions(["DELETE_CATEGORY"]), destroy)
 
 module.exports = Router

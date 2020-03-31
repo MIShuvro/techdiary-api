@@ -4,18 +4,46 @@ module.exports.index = async (req, res) => {
   let articles = await Article.find()
   res.json(articles)
 } // article list
-module.exports.show = (req, res) => {
-  res.json({
-    message: "show"
+module.exports.show = async (req, res) => {
+  const findArticle = await Article.findOne({
+    slug: req.params.slug
   })
+
+
+  if (!findArticle) {
+    return res.status(404).json({
+      msg: 'Article Not Found or Deleted.'
+    })
+  }
+  if (findArticle) {
+    res.status(200).json({
+      article: findArticle
+    })
+  }
 } // show a single article
-module.exports.update = (req, res) => {
+module.exports.update = async (req, res) => {
+  const article = await Article.findOneAndUpdate({
+    slug: req.params.slug
+  }, {
+    $set: req.body,
+  }, {
+    new: true
+  })
+
   res.json({
-    message: "update"
+    article,
+    msg: 'Article updated successfull'
   })
 } // update a single article
 module.exports.store = async (req, res) => {
-  const { title, slug, body, excerpt, featureImage, categories } = req.body
+  const {
+    title,
+    slug,
+    body,
+    excerpt,
+    featureImage,
+    categories
+  } = req.body
   let article = await Article.create({
     title,
     slug,
@@ -27,8 +55,16 @@ module.exports.store = async (req, res) => {
   })
   res.json(article)
 } // create a single article
-module.exports.destroy = (req, res) => {
+module.exports.destroy = async (req, res) => {
+  const article = await Article.deleteOne({
+    slug: req.params.slug
+  })
+  if (!article.n) {
+    return res.json({
+      msg: 'Article already deleted or not found.'
+    })
+  }
   res.json({
-    message: "destroy"
+    msg: 'Article deleted successfull'
   })
 } // delete a single article

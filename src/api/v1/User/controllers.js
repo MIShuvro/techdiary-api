@@ -88,7 +88,7 @@ module.exports.mySessions = async (req, res) => {
       _doc.active = _doc.token === active
       return _doc
     })
-    .sort((x, y) => (x.active === y.active ? 0 : x.active ? -1 : 1))
+    .sort((x, y) => y.active - x.active)
 
   res.json({
     sessions: dd

@@ -4,10 +4,12 @@ const mongoose = require("mongoose")
 /**
  * Connect to mongoose
  */
+
 mongoose.connect(process.env.DATABASE_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useCreateIndex: true
+  useCreateIndex: true,
+  useFindAndModify: false
 })
 
 mongoose.connection.on("connected", () => {
